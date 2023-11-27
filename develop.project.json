@@ -1,0 +1,28 @@
+{
+	"name": "tween-promise",
+	"tree": {
+		"$className": "DataModel",
+		"ReplicatedStorage": {
+			"$className": "ReplicatedStorage",
+			"Packages": {
+				"$path": "Packages",
+				"TweenPromise": {
+					"$path": "src"
+				}
+			}
+		},
+		"ServerScriptService": {
+			"$className": "ServerScriptService",
+			"ServerEntry": {
+				"$path": "test/serverEntry"
+			}
+		},
+		"StarterPlayer": {
+			"StarterPlayerScripts": {
+				"ClientEntry": {
+					"$path": "test/clientEntry"
+				}
+			}
+		}
+	}
+}
