@@ -1,3 +1,4 @@
+--!native
 --!strict
 
 local RunService = game:GetService("RunService")
@@ -42,7 +43,7 @@ local function defaultYieldStep()
 	RunService.Stepped:Wait()
 end
 
-local function tweenCallbackInternal(options: TweenCallbackOptions, tweenInfo: TweenInfo, callback: (number) -> ())
+local function tweenCallbackInternal(options: TweenCallbackOptions, tweenInfo: TweenInfo, callback: (alpha: number) -> ())
 	local tweenTime = tweenInfo.Time
 	local easingStyle = tweenInfo.EasingStyle
 	local easingDirection = tweenInfo.EasingDirection
@@ -98,7 +99,7 @@ local function tweenCallbackInternal(options: TweenCallbackOptions, tweenInfo: T
 	end)
 end
 
-function detailed.callback(options: TweenCallbackOptions, tweenInfo: TweenInfo, callback: (number) -> ())
+function detailed.callback(options: TweenCallbackOptions, tweenInfo: TweenInfo, callback: (alpha: number) -> ())
 	return tweenCallbackInternal(options, tweenInfo, callback)
 end
 
@@ -126,7 +127,7 @@ function module.info(options: TweenInfoOptions): TweenInfo
 	return TweenInfo.new(merged.time, merged.easingStyle, merged.easingDirection, merged.repeatCount, merged.reverses, merged.delayTime)
 end
 
-function module.callback(from: number, to: number, tweenInfo: TweenInfo, callback: (number) -> ())
+function module.callback(from: number, to: number, tweenInfo: TweenInfo, callback: (alpha: number) -> ())
 	return detailed.callback({
 		from = from,
 		to = to,

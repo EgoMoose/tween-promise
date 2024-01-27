@@ -1,4 +1,7 @@
+--!native
 --!strict
+
+local Oklab = require(script.Parent:FindFirstChild("Oklab"))
 
 local module = {}
 local lerp = {}
@@ -25,9 +28,7 @@ function lerp.Rect(from: Rect, to: Rect, alpha: number): Rect
 	)
 end
 
-function lerp.Color3(from: Color3, to: Color3, alpha: number): Color3
-	return from:Lerp(to, alpha)
-end
+lerp.Color3 = Oklab.lerp
 
 function lerp.UDim(from: UDim, to: UDim, alpha: number): UDim
 	-- stylua: ignore
@@ -48,7 +49,7 @@ end
 function lerp.Vector2int16(from: Vector2int16, to: Vector2int16, alpha: number): Vector2int16
 	-- stylua: ignore
 	return Vector2int16.new(
-		lerp.number(from.X, to.X, alpha), 
+		lerp.number(from.X, to.X, alpha),
 		lerp.number(from.Y, to.Y, alpha)
 	)
 end
@@ -66,7 +67,7 @@ end
 function module.tween<T>(from: T, to: T, alpha: number): T
 	local rbxTypeFrom = typeof(from)
 	local rbxTypeTo = typeof(to)
-	
+
 	-- stylua: ignore
 	assert(rbxTypeFrom == rbxTypeTo, `{rbxTypeFrom} and {rbxTypeTo} are not of the same type and thus cannot be lerped.`)
 
