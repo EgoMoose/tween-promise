@@ -1,9 +1,10 @@
 [package]
 name = "egomoose/tween-promise"
 description = "https://github.com/EgoMoose/tween-promise"
-version = "0.1.0"
+version = "0.1.1"
 registry = "https://github.com/UpliftGames/wally-index"
 realm = "shared"
+license = "MIT"
 ignore = ["test", "assets"]
 
 [dependencies]
