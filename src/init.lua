@@ -17,11 +17,11 @@ export type TweenInfoOptions = {
 	delayTime: number?,
 }
 
-type TweenCallbackOptions = {
+export type TweenCallbackOptions = {
 	from: number,
 	to: number,
 	initial: number?,
-	yieldStep: () -> (),
+	yieldStep: (() -> ())?,
 }
 
 local DEFAULT_TWEEN_INFO_OPTIONS: { [string]: any } = {
@@ -34,8 +34,13 @@ local DEFAULT_TWEEN_INFO_OPTIONS: { [string]: any } = {
 }
 
 local module = {}
+local detailed = {}
 
 -- Private
+
+local function defaultYieldStep()
+	RunService.Stepped:Wait()
+end
 
 local function tweenCallbackInternal(options: TweenCallbackOptions, tweenInfo: TweenInfo, callback: (number) -> ())
 	local tweenTime = tweenInfo.Time
@@ -47,9 +52,9 @@ local function tweenCallbackInternal(options: TweenCallbackOptions, tweenInfo: T
 
 	local from = options.from
 	local to = options.to
-	local yieldStep = options.yieldStep
+	local yieldStep = options.yieldStep or defaultYieldStep
 
-	local initial = options.initial or options.from
+	local initial = options.initial or from
 	local initialAlpha = math.clamp((initial - options.from) / (options.to - options.from), 0, 1)
 
 	local playCount = 0
@@ -76,7 +81,6 @@ local function tweenCallbackInternal(options: TweenCallbackOptions, tweenInfo: T
 					local beta = TweenService:GetValue(alpha, easingStyle, easingDirection)
 					local lerpedValue = Lerp.number(from, to, beta)
 
-					-- TODO: verify task.spawn is suitable here
 					task.spawn(callback, lerpedValue)
 
 					if alpha >= 1 or (reverses and alpha <= 0) then
@@ -94,6 +98,23 @@ local function tweenCallbackInternal(options: TweenCallbackOptions, tweenInfo: T
 	end)
 end
 
+function detailed.callback(options: TweenCallbackOptions, tweenInfo: TweenInfo, callback: (number) -> ())
+	return tweenCallbackInternal(options, tweenInfo, callback)
+end
+
+function detailed.new(options: TweenCallbackOptions, instance: Instance, tweenInfo: TweenInfo, properties: { [string]: TweenFriendly })
+	local intialValues = {}
+	for key, _ in properties do
+		intialValues[key] = (instance :: any)[key] :: TweenFriendly
+	end
+
+	return tweenCallbackInternal(options, tweenInfo, function(alpha: number)
+		for key, targetValue in properties do
+			(instance :: any)[key] = Lerp.tween(intialValues[key], targetValue, alpha)
+		end
+	end)
+end
+
 -- Public
 
 function module.info(options: TweenInfoOptions): TweenInfo
@@ -102,49 +123,25 @@ function module.info(options: TweenInfoOptions): TweenInfo
 		merged[key] = options[key] or value
 	end
 
-	return TweenInfo.new(
-		merged.time,
-		merged.easingStyle,
-		merged.easingDirection,
-		merged.repeatCount,
-		merged.reverses,
-		merged.delayTime
-	)
+	return TweenInfo.new(merged.time, merged.easingStyle, merged.easingDirection, merged.repeatCount, merged.reverses, merged.delayTime)
 end
 
 function module.callback(from: number, to: number, tweenInfo: TweenInfo, callback: (number) -> ())
-	local tweenCallbackOptions = {
+	return detailed.callback({
 		from = from,
 		to = to,
-		yieldStep = function()
-			RunService.Stepped:Wait()
-		end,
-	}
-
-	return tweenCallbackInternal(tweenCallbackOptions, tweenInfo, callback)
+	}, tweenInfo, callback)
 end
 
 function module.new(instance: Instance, tweenInfo: TweenInfo, properties: { [string]: TweenFriendly })
-	local tweenCallbackOptions = {
+	return detailed.new({
 		from = 0,
 		to = 1,
-		yieldStep = function()
-			RunService.Stepped:Wait()
-		end,
-	}
-
-	local intialValues = {}
-	for key, _ in properties do
-		intialValues[key] = (instance :: any)[key] :: TweenFriendly
-	end
-
-	return tweenCallbackInternal(tweenCallbackOptions, tweenInfo, function(alpha: number)
-		for key, targetValue in properties do
-			Lerp.tween(intialValues[key], targetValue, alpha)
-		end
-	end)
+	}, instance, tweenInfo, properties)
 end
 
 --
+
+module.detailed = detailed
 
 return module
