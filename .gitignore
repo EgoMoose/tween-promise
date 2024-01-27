@@ -4,5 +4,6 @@
 
 /.vscode
 
+build.rbxm
 sourcemap.json
 wally.lock
