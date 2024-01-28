@@ -117,6 +117,10 @@ end
 
 -- Public
 
+function module.lerp(from: TweenFriendly, to: TweenFriendly, alpha: number)
+	return Lerp.tween(from, to, alpha)
+end
+
 function module.info(options: TweenInfoOptions): TweenInfo
 	local merged: TweenInfoOptions = {}
 	for key, value in DEFAULT_TWEEN_INFO_OPTIONS do

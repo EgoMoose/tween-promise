@@ -63,6 +63,8 @@ function module.number(from: number, to: number, alpha: number): number
 	return lerp.number(from, to, alpha)
 end
 
+-- this is a lerp function for all tween friendly data types
+-- it should match 1:1 with how roblox lerps tween friendly data types
 function module.tween<T>(from: T, to: T, alpha: number): T
 	local rbxTypeFrom = typeof(from)
 	local rbxTypeTo = typeof(to)
