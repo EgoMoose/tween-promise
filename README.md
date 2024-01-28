@@ -33,12 +33,12 @@ function module.info(options: TweenInfoOptions): TweenInfo
 Provides a generalized linear interpolation function for all tween friendly data types.
 It should match with how Roblox internally interpolates tween friendly data types.
 
-@param from TweenFriendly -- The starting value of the lerp
-@param to TweenFriendly -- The ending value of the lerp
+@param from T & TweenFriendly -- The starting value of the lerp
+@param to T & TweenFriendly -- The ending value of the lerp
 @param alpha number -- The percentage between from and to
-@return TweenFriendly
+@return T
 --]=]
-function module.lerp(from: TweenFriendly, to: TweenFriendly, alpha: number): TweenFriendly
+function module.lerp<T>(from: T & TweenFriendly, to: T & TweenFriendly, alpha: number): T
 ```
 
 ```Lua

@@ -117,7 +117,7 @@ end
 
 -- Public
 
-function module.lerp(from: TweenFriendly, to: TweenFriendly, alpha: number)
+function module.lerp<T>(from: T & TweenFriendly, to: T & TweenFriendly, alpha: number): T
 	return Lerp.tween(from, to, alpha)
 end
 

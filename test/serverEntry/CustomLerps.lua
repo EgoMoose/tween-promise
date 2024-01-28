@@ -10,7 +10,7 @@ function lerpOverrides.Color3(from: Color3, to: Color3, alpha: number): Color3
 	return from:Lerp(to, alpha)
 end
 
-local function lerp<T>(from: T, to: T, alpha: number): T
+local function lerp<T>(from: T & TweenPromise.TweenFriendly, to: T & TweenPromise.TweenFriendly, alpha: number): T
 	local rbxTypeFrom = typeof(from)
 	local rbxTypeTo = typeof(to)
 
