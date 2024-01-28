@@ -51,7 +51,7 @@ Creates a new tween promise with a numerical callback.
 @param callback (number) - () -- A function that is called each tween step with the current tween value
 @return Promise
 --]=]
-function module.new(from: number, to: number, tweenInfo: TweenInfo, callback: (number) - ()): Promise
+function module.callback(from: number, to: number, tweenInfo: TweenInfo, callback: (number) - ()): Promise
 
 --[=[
 Creates a new tween promise for an instance.
@@ -80,7 +80,7 @@ Creates a new tween promise with a numerical callback.
 @param callback (number) - () -- A function that is called each tween step with the current tween value
 @return Promise
 --]=]
-function module.detailed.new(options: TweenCallbackOptions, tweenInfo: TweenInfo, callback: (number) - ()): Promise
+function module.detailed.callback(options: TweenCallbackOptions, tweenInfo: TweenInfo, callback: (number) - ()): Promise
 
 --[=[
 Creates a new tween promise for an instance.
