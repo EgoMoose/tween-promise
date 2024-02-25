@@ -121,6 +121,10 @@ function module.lerp<T>(from: T & TweenFriendly, to: T & TweenFriendly, alpha: n
 	return Lerp.tween(from, to, alpha)
 end
 
+function module.resolve(...: any)
+	return Promise.resolve(...)
+end
+
 function module.info(options: TweenInfoOptions): TweenInfo
 	local merged: TweenInfoOptions = {}
 	for key, value in DEFAULT_TWEEN_INFO_OPTIONS do

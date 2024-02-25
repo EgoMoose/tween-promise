@@ -39,6 +39,14 @@ It should match with how Roblox internally interpolates tween friendly data type
 @return T
 --]=]
 function module.lerp<T>(from: T & TweenFriendly, to: T & TweenFriendly, alpha: number): T
+
+--[=[
+This is the same as Promise.resolve which is a function often used in tandem with the module
+
+@param ... any -- The starting value of the lerp
+@return Promise
+--]=]
+function module.resolve(...: any): Promise
 ```
 
 ```Lua
