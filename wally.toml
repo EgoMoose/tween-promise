@@ -1,11 +1,12 @@
 [package]
 name = "egomoose/tween-promise"
 description = "https://github.com/EgoMoose/tween-promise"
-version = "0.2.0"
+version = "0.3.0"
 registry = "https://github.com/UpliftGames/wally-index"
 realm = "shared"
 license = "MIT"
-ignore = ["test", "assets"]
+exclude = ["**"]
+include = ["src", "src/**", "wally.toml", "wally.lock", "default.project.json", "LICENSE"]
 
 [dependencies]
 Promise = "evaera/promise@4.0.0"
