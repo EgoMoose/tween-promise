@@ -1,7 +1,7 @@
 /ServerPackages
+/DevPackages
 /Packages
 /assets
 
-build.rbxm
 sourcemap.json
-wally.lock
+.ds_store

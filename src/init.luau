@@ -3,10 +3,10 @@
 local RunService = game:GetService("RunService")
 local TweenService = game:GetService("TweenService")
 
-local Lerp = require(script:WaitForChild("Lerp"))
-local Promise = require(script.Parent:WaitForChild("Promise"))
+local Lerp = require(script.Lerp)
+local Promise = require(script.Parent.Promise)
 
-export type TweenFriendly = number | boolean | CFrame | Rect | Color3 | UDim | UDim2 | Vector2 | Vector2int16 | Vector3
+export type TweenFriendly = Lerp.LerpFriendly
 
 export type TweenInfoOptions = {
 	time: number?,
@@ -102,15 +102,20 @@ function detailed.callback(options: TweenCallbackOptions, tweenInfo: TweenInfo, 
 	return tweenCallbackInternal(options, tweenInfo, callback)
 end
 
-function detailed.new(options: TweenCallbackOptions, instance: Instance, tweenInfo: TweenInfo, properties: { [string]: TweenFriendly })
-	local intialValues = {}
+function detailed.new(
+	options: TweenCallbackOptions,
+	instance: Instance,
+	tweenInfo: TweenInfo,
+	properties: { [string]: TweenFriendly }
+)
+	local initialValues = {}
 	for key, _ in properties do
-		intialValues[key] = (instance :: any)[key] :: TweenFriendly
+		initialValues[key] = (instance :: any)[key] :: TweenFriendly
 	end
 
 	return tweenCallbackInternal(options, tweenInfo, function(alpha: number)
 		for key, targetValue in properties do
-			(instance :: any)[key] = Lerp.tween(intialValues[key], targetValue, alpha)
+			(instance :: any)[key] = Lerp.tween(initialValues[key], targetValue, alpha)
 		end
 	end)
 end
@@ -131,7 +136,14 @@ function module.info(options: TweenInfoOptions): TweenInfo
 		merged[key] = options[key] or value
 	end
 
-	return TweenInfo.new(merged.time, merged.easingStyle, merged.easingDirection, merged.repeatCount, merged.reverses, merged.delayTime)
+	return TweenInfo.new(
+		merged.time,
+		merged.easingStyle,
+		merged.easingDirection,
+		merged.repeatCount,
+		merged.reverses,
+		merged.delayTime
+	)
 end
 
 function module.callback(from: number, to: number, tweenInfo: TweenInfo, callback: (number) -> ())
