@@ -8,7 +8,10 @@
         "lerped",
         "lerps",
         "roblox",
-        "rojo"
+        "rojo",
+        "tweened",
+        "tweening",
+        "tweens"
     ],
     "ignoreWords": [],
     "import": []
